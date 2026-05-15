@@ -1,0 +1,70 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/forms/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Forms",
+    "description": "Form layout definitions for a PowerTable visual. Forms provide a structured input interface for adding or editing rows.",
+    "type": "array",
+    "items": {
+        "$ref": "#/definitions/Form"
+    },
+    "definitions": {
+        "Form": {
+            "type": "object",
+            "description": "A form definition.",
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "Display title of the form."
+                },
+                "description": { "type": "string" },
+                "layoutMeta": {
+                    "type": "object",
+                    "description": "Form layout structure.",
+                    "properties": {
+                        "children": {
+                            "type": "array",
+                            "description": "Ordered list of form elements.",
+                            "items": { "$ref": "#/definitions/FormElement" }
+                        }
+                    },
+                    "additionalProperties": true
+                }
+            },
+            "required": ["title", "layoutMeta"],
+            "additionalProperties": true
+        },
+        "FormElement": {
+            "type": "object",
+            "description": "A form layout element (field, section, or group).",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Element type.",
+                    "enum": ["field", "section", "group"]
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Column name this field is bound to."
+                },
+                "mandatory": {
+                    "type": "integer",
+                    "description": "0 = optional, 1 = required."
+                },
+                "allowEdit": {
+                    "type": "integer",
+                    "description": "0 = read-only, 1 = editable."
+                },
+                "props": {
+                    "type": "object",
+                    "description": "Element-specific properties.",
+                    "properties": {
+                        "name": { "type": "string" }
+                    },
+                    "additionalProperties": true
+                }
+            },
+            "required": ["type"],
+            "additionalProperties": true
+        }
+    }
+}

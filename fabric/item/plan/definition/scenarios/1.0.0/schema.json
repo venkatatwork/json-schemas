@@ -1,0 +1,81 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/scenarios/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Scenarios",
+    "description": "Scenario definitions for a Planning visual. Scenarios enable what-if analysis by defining alternative data sets for selected measures.",
+    "type": "array",
+    "items": {
+        "$ref": "#/definitions/Scenario"
+    },
+    "definitions": {
+        "Scenario": {
+            "type": "object",
+            "description": "A scenario definition.",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Display name of the scenario."
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier."
+                },
+                "status": {
+                    "type": "integer",
+                    "description": "Scenario status. 10 = active."
+                },
+                "createdAt": {
+                    "type": "integer",
+                    "description": "Creation timestamp (Unix epoch seconds)."
+                },
+                "updatedAt": {
+                    "type": "integer",
+                    "description": "Last update timestamp (Unix epoch seconds)."
+                },
+                "meta": {
+                    "$ref": "#/definitions/ScenarioMeta"
+                },
+                "autoWritebackEnabled": {
+                    "type": "integer",
+                    "description": "Whether auto-writeback is enabled. 10 = enabled, 20 = disabled."
+                },
+                "simulations": {
+                    "description": "Simulation configurations for this scenario.",
+                    "type": ["array", "null"]
+                },
+                "userPermission": {
+                    "type": "array",
+                    "description": "User-level permissions for this scenario.",
+                    "items": { "type": "object" }
+                }
+            },
+            "required": ["name", "id", "status", "meta"],
+            "additionalProperties": true
+        },
+        "ScenarioMeta": {
+            "type": "object",
+            "description": "Scenario metadata.",
+            "properties": {
+                "measureIds": {
+                    "type": "array",
+                    "description": "Measure GUIDs included in this scenario.",
+                    "items": { "type": "string" }
+                },
+                "scenarioGuid": {
+                    "type": "string",
+                    "description": "Globally unique scenario identifier."
+                },
+                "order": {
+                    "type": "integer",
+                    "description": "Display order."
+                },
+                "dimensionHash": {
+                    "type": "string",
+                    "description": "Hash of the dimension configuration."
+                }
+            },
+            "required": ["measureIds", "scenarioGuid", "order"],
+            "additionalProperties": true
+        }
+    }
+}

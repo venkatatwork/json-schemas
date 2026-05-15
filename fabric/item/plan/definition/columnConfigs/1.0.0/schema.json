@@ -1,0 +1,86 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/columnConfigs/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Column Configs",
+    "description": "Column configuration for a PowerTable visual. Defines column types, display settings, validation rules, and default values for each database column.",
+    "type": "array",
+    "items": {
+        "$ref": "#/definitions/ColumnConfig"
+    },
+    "definitions": {
+        "ColumnConfig": {
+            "type": "object",
+            "description": "Configuration for a single column in a PowerTable.",
+            "properties": {
+                "columnGuid": {
+                    "type": "string",
+                    "description": "Unique column identifier."
+                },
+                "columnName": {
+                    "type": "string",
+                    "description": "Database column name."
+                },
+                "columnType": {
+                    "type": "integer",
+                    "description": "Column data type. 1 = Text, 2 = Dropdown/Selection, 3 = Number, 4 = Date, 5 = Boolean."
+                },
+                "columnMeta": {
+                    "type": "object",
+                    "description": "Column-specific metadata and settings.",
+                    "properties": {
+                        "defaultValueType": {
+                            "type": "string",
+                            "description": "Type of default value.",
+                            "enum": ["NONE", "STATIC", "FORMULA"]
+                        },
+                        "defaultValue": {
+                            "description": "Default value for the column."
+                        },
+                        "isPrimaryKey": { "type": "boolean" },
+                        "updateValueOnRowModify": { "type": "boolean" },
+                        "resetToDefaultOnRowModify": { "type": "boolean" },
+                        "maximumAllowedLength": { "type": "string" },
+                        "textFieldColumnType": { "type": "string" },
+                        "options": {
+                            "type": "array",
+                            "description": "Selection options for dropdown columns."
+                        },
+                        "selectionMethod": {
+                            "type": "string",
+                            "enum": ["DISTINCT_VALUES", "LOAD_FROM_DATABASE", "MANUAL"]
+                        },
+                        "optionLinking": {
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        "isFilterBasedOnAnotherValue": { "type": "boolean" }
+                    },
+                    "additionalProperties": true
+                },
+                "hideColumn": {
+                    "type": "integer",
+                    "description": "0 = visible, 1 = hidden."
+                },
+                "mandatory": {
+                    "type": "integer",
+                    "description": "0 = optional, 1 = required."
+                },
+                "allowEdit": {
+                    "type": "integer",
+                    "description": "0 = read-only, 1 = editable."
+                },
+                "visualColumnType": {
+                    "type": "integer",
+                    "description": "Visual column type identifier."
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "User-visible column name."
+                },
+                "description": { "type": "string" }
+            },
+            "required": ["columnGuid", "columnName", "columnType"],
+            "additionalProperties": true
+        }
+    }
+}

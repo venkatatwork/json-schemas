@@ -1,0 +1,131 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/properties/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Properties",
+    "description": "Visual properties configuration. Contains pivot assignments (row/column/measure mappings), sorting, super-filter assignments, entity-level variables, and page-level filter assignments.",
+    "type": "object",
+    "properties": {
+        "visuals": {
+            "type": "object",
+            "description": "Map of visual ID to visual properties.",
+            "additionalProperties": {
+                "$ref": "#/definitions/VisualProperties"
+            }
+        },
+        "statusCode": { "type": "integer" },
+        "message": { "type": "string" },
+        "payload": {
+            "type": "object",
+            "description": "Response payload wrapper.",
+            "properties": {
+                "properties": {
+                    "$ref": "#/definitions/PropertiesWrapper"
+                }
+            },
+            "additionalProperties": true
+        }
+    },
+    "additionalProperties": true,
+    "definitions": {
+        "VisualProperties": {
+            "type": "object",
+            "properties": {
+                "schema": {
+                    "type": "string",
+                    "description": "Schema version of the visual properties."
+                },
+                "properties": {
+                    "$ref": "#/definitions/PropertiesContent"
+                }
+            },
+            "additionalProperties": true
+        },
+        "PropertiesWrapper": {
+            "type": "object",
+            "properties": {
+                "schema": { "type": "string" },
+                "properties": {
+                    "$ref": "#/definitions/PropertiesContent"
+                }
+            },
+            "additionalProperties": true
+        },
+        "PropertiesContent": {
+            "type": "object",
+            "properties": {
+                "pivotAssignments": {
+                    "type": "array",
+                    "description": "Pivot field assignments (rows, columns, measures).",
+                    "items": { "$ref": "#/definitions/PivotAssignment" }
+                },
+                "sortingConfig": {
+                    "type": "array",
+                    "description": "Sorting configuration."
+                },
+                "superFilterAssignments": {
+                    "type": "array",
+                    "description": "Super-filter configurations.",
+                    "items": { "type": "object" }
+                },
+                "pageLevelFilterAssignments": {
+                    "type": "array",
+                    "description": "Page-level filter configurations."
+                },
+                "entityLevelVariables": {
+                    "type": "array",
+                    "description": "Entity-level variable and action definitions.",
+                    "items": { "$ref": "#/definitions/EntityLevelVariable" }
+                }
+            },
+            "additionalProperties": true
+        },
+        "PivotAssignment": {
+            "type": "object",
+            "description": "A pivot field assignment.",
+            "properties": {
+                "id": { "type": "string" },
+                "sourceId": { "type": "string" },
+                "bucketId": {
+                    "type": "string",
+                    "description": "Target bucket.",
+                    "enum": ["rows", "columns", "ameasure", "filters"]
+                },
+                "columnName": { "type": "string" },
+                "dataType": { "type": "string" },
+                "order": { "type": "integer" },
+                "columnType": { "type": "string" },
+                "formatString": { "type": ["string", "null"] },
+                "sourceType": { "type": "string" },
+                "name": { "type": "string" },
+                "tableName": { "type": "string" },
+                "dataRoleType": {
+                    "type": "string",
+                    "enum": ["Grouping", "Measure"]
+                },
+                "aggregationType": { "type": "string" },
+                "customName": { "type": "string" },
+                "measureGuid": { "type": "string" }
+            },
+            "required": ["id", "bucketId", "columnName", "dataType"],
+            "additionalProperties": true
+        },
+        "EntityLevelVariable": {
+            "type": "object",
+            "description": "An entity-level variable or action.",
+            "properties": {
+                "id": { "type": "string" },
+                "label": { "type": "string" },
+                "type": {
+                    "type": "string",
+                    "enum": ["action", "variable", "parameter"]
+                },
+                "scope": { "type": "string" },
+                "technicalName": { "type": "string" },
+                "description": { "type": "string" },
+                "showInViewMode": { "type": "boolean" }
+            },
+            "required": ["id", "label", "type"],
+            "additionalProperties": true
+        }
+    }
+}

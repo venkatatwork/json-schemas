@@ -1,0 +1,28 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/visual/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Visual",
+    "description": "Basic visual type descriptor for a Plan visual. Each visual belongs to a sheet and has a type that determines its behavior.",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "Unique identifier of the visual."
+        },
+        "visualMeta": {
+            "type": "object",
+            "description": "Visual metadata.",
+            "properties": {
+                "visualType": {
+                    "type": "integer",
+                    "description": "Type of visual. 10 = Planning, 20 = Intelligence (Report), 30 = PowerTable.",
+                    "enum": [10, 20, 30]
+                }
+            },
+            "required": ["visualType"],
+            "additionalProperties": true
+        }
+    },
+    "required": ["id", "visualMeta"],
+    "additionalProperties": false
+}

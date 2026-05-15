@@ -1,0 +1,92 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/dataInput/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Data Input",
+    "description": "Data input column definitions for a Planning visual. Each entry represents a measure or column (native, visual, or forecast) with its configuration.",
+    "type": "array",
+    "items": {
+        "$ref": "#/definitions/DataInputColumn"
+    },
+    "definitions": {
+        "DataInputColumn": {
+            "type": "object",
+            "description": "A data input column or measure definition.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of the data input column."
+                },
+                "measureGuid": {
+                    "type": "string",
+                    "description": "Globally unique measure identifier."
+                },
+                "visualId": {
+                    "type": "integer",
+                    "description": "The visual this column belongs to."
+                },
+                "columnMeta": {
+                    "$ref": "#/definitions/ColumnMeta"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Display name of the column."
+                },
+                "description": {
+                    "type": ["string", "null"],
+                    "description": "Optional description."
+                },
+                "createdAt": {
+                    "type": "integer",
+                    "description": "Creation timestamp (Unix epoch seconds)."
+                },
+                "updatedAt": {
+                    "type": "integer",
+                    "description": "Last update timestamp (Unix epoch seconds)."
+                },
+                "dataInputType": {
+                    "type": "integer",
+                    "description": "Data input type identifier."
+                },
+                "disableWriteAccess": {
+                    "type": "boolean",
+                    "description": "Whether write access is disabled for this column."
+                },
+                "forecastAllowedUserPermissions": {
+                    "type": "boolean",
+                    "description": "Whether user-level forecast permissions are enabled."
+                }
+            },
+            "required": ["id", "measureGuid", "visualId", "columnMeta", "name"],
+            "additionalProperties": true
+        },
+        "ColumnMeta": {
+            "type": "object",
+            "description": "Metadata for a data input column including its measure type configuration.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Column metadata identifier."
+                },
+                "label": {
+                    "type": "string",
+                    "description": "Display label."
+                },
+                "measure_type": {
+                    "type": "object",
+                    "description": "The measure type configuration. Exactly one key should be present: Native, DataInput, VisualColumn, or Forecast.",
+                    "additionalProperties": true
+                },
+                "data_type": {
+                    "type": "string",
+                    "description": "Data type of the column.",
+                    "enum": ["Number", "Text", "Date", "Boolean"]
+                },
+                "description": {
+                    "type": ["string", "null"]
+                }
+            },
+            "required": ["id", "label", "measure_type", "data_type"],
+            "additionalProperties": true
+        }
+    }
+}

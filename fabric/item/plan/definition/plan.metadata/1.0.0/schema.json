@@ -1,0 +1,8 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/plan.metadata/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Plan Metadata",
+    "description": "Top-level metadata for a Plan artifact. This part stores plan-level configuration that applies across all sheets and visuals.",
+    "type": "object",
+    "additionalProperties": true
+}

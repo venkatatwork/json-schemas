@@ -1,0 +1,101 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/approvals/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Approvals",
+    "description": "Approval workflow configuration for a PowerTable visual. Defines approval filters, levels, and user assignments.",
+    "type": "object",
+    "properties": {
+        "approvalFilters": {
+            "type": "array",
+            "description": "List of approval filter configurations.",
+            "items": {
+                "$ref": "#/definitions/ApprovalFilter"
+            }
+        },
+        "persistFlag": {
+            "type": "integer",
+            "description": "Persistence flag. 10 = persisted."
+        },
+        "ruleType": {
+            "type": "integer",
+            "description": "Approval rule type. 10 = default."
+        },
+        "powerTableApprovalLevel": {
+            "type": "array",
+            "description": "Multi-level approval configuration.",
+            "items": {
+                "$ref": "#/definitions/ApprovalLevel"
+            }
+        },
+        "multiLevelEnabled": {
+            "type": "integer",
+            "description": "0 = single level, 1 = multi-level enabled."
+        }
+    },
+    "required": ["approvalFilters"],
+    "additionalProperties": true,
+    "definitions": {
+        "ApprovalFilter": {
+            "type": "object",
+            "description": "An approval filter with user assignments.",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Filter name."
+                },
+                "order": {
+                    "type": "integer",
+                    "description": "Display order."
+                },
+                "filter": {
+                    "description": "Filter condition. null for no filter.",
+                    "type": ["object", "null"]
+                },
+                "filterUsers": {
+                    "type": "array",
+                    "description": "Users assigned to this approval filter.",
+                    "items": {
+                        "$ref": "#/definitions/ApprovalUser"
+                    }
+                }
+            },
+            "required": ["name", "filterUsers"],
+            "additionalProperties": true
+        },
+        "ApprovalUser": {
+            "type": "object",
+            "description": "A user assigned to an approval level.",
+            "properties": {
+                "profileId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "User profile identifier."
+                },
+                "entityType": {
+                    "type": "integer",
+                    "description": "Entity type. 10 = user."
+                },
+                "approvalLevel": {
+                    "type": "integer",
+                    "description": "Approval level this user is assigned to."
+                }
+            },
+            "required": ["profileId", "approvalLevel"],
+            "additionalProperties": true
+        },
+        "ApprovalLevel": {
+            "type": "object",
+            "description": "An approval level definition.",
+            "properties": {
+                "name": { "type": "string" },
+                "description": { "type": "string" },
+                "level": {
+                    "type": "integer",
+                    "description": "Level number (1-based)."
+                }
+            },
+            "required": ["name", "level"],
+            "additionalProperties": true
+        }
+    }
+}

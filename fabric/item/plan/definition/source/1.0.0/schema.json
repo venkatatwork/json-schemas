@@ -1,0 +1,32 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/source/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Source",
+    "description": "Data source configuration for a PowerTable visual. Specifies the database connection details for the table backing the visual.",
+    "type": "object",
+    "properties": {
+        "dbDisplayName": {
+            "type": "string",
+            "description": "Display name of the database."
+        },
+        "dbName": {
+            "type": "string",
+            "description": "Internal name of the database."
+        },
+        "dbSchema": {
+            "type": "string",
+            "description": "Database schema name (e.g., dbo)."
+        },
+        "tableName": {
+            "type": "string",
+            "description": "Name of the source table."
+        },
+        "type": {
+            "type": "string",
+            "description": "Type of database connection.",
+            "enum": ["FabricSql", "FabricMirroredDatabase", "FabricLakehouse"]
+        }
+    },
+    "required": ["dbName", "dbSchema", "tableName", "type"],
+    "additionalProperties": true
+}

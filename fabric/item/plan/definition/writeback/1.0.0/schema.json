@@ -1,0 +1,133 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/writeback/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Writeback",
+    "description": "Writeback configuration for a Planning visual. Controls how and where data is written back to external destinations.",
+    "type": "object",
+    "properties": {
+        "writebackType": {
+            "type": "integer",
+            "description": "Type of writeback operation."
+        },
+        "destinationIds": {
+            "type": "array",
+            "description": "IDs of the writeback destinations to use.",
+            "items": { "type": "integer" }
+        },
+        "writebackFilter": {
+            "type": "object",
+            "description": "Filter applied during writeback.",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Filter type. 'none' for no filter."
+                }
+            },
+            "additionalProperties": true
+        },
+        "excludedMeasureGuids": {
+            "type": "array",
+            "description": "Measure GUIDs excluded from writeback.",
+            "items": { "type": "string" }
+        },
+        "isAutoWritebackEnabled": {
+            "type": "integer",
+            "description": "Auto writeback toggle. 10 = enabled, 20 = disabled."
+        },
+        "autoWbEnabledScenarioIds": {
+            "type": "array",
+            "description": "Scenario IDs for which auto-writeback is enabled.",
+            "items": { "type": "string" }
+        },
+        "debounce": {
+            "type": "object",
+            "description": "Debounce settings for auto-writeback.",
+            "properties": {
+                "duration": {
+                    "type": "integer",
+                    "description": "Debounce duration in seconds."
+                },
+                "isDebounceEnabled": {
+                    "type": "integer",
+                    "description": "10 = enabled, 20 = disabled."
+                }
+            },
+            "additionalProperties": false
+        },
+        "isSnapshotWbEnabled": {
+            "type": "integer",
+            "description": "Whether snapshot writeback is enabled. 10 = enabled, 20 = disabled."
+        },
+        "wbTableColumnMapping": {
+            "type": "object",
+            "description": "Mapping of measure GUIDs to writeback column names.",
+            "additionalProperties": {
+                "type": "object",
+                "properties": {
+                    "visualName": { "type": "string" },
+                    "wbColumnName": { "type": "string" }
+                }
+            }
+        },
+        "numberPrecision": {
+            "type": "object",
+            "description": "Number precision settings.",
+            "properties": {
+                "decimal": {
+                    "type": "integer",
+                    "description": "Number of decimal places."
+                }
+            }
+        },
+        "stringColumnLength": {
+            "type": "object",
+            "description": "String column length settings.",
+            "properties": {
+                "type": { "type": "integer" },
+                "length": { "type": "string" }
+            }
+        },
+        "writebackAsHTML": { "type": "boolean" },
+        "wbColumns": {
+            "type": "array",
+            "description": "Column definitions for the writeback table.",
+            "items": {
+                "$ref": "#/definitions/WritebackColumn"
+            }
+        },
+        "hasWritebackAccess": { "type": "boolean" }
+    },
+    "required": ["writebackType"],
+    "additionalProperties": true,
+    "definitions": {
+        "WritebackColumn": {
+            "type": "object",
+            "description": "A column in the writeback table.",
+            "properties": {
+                "id": { "type": "string" },
+                "measureGuid": { "type": "string" },
+                "name": {
+                    "type": "string",
+                    "description": "Column name in the writeback table."
+                },
+                "dataType": {
+                    "type": "string",
+                    "description": "Data type of the column."
+                },
+                "isColumnDimension": { "type": "boolean" },
+                "isTimeDimension": { "type": "boolean" },
+                "timeIntervalUnit": {
+                    "type": "string",
+                    "enum": ["YEAR", "QUARTER", "MONTH", "WEEK", "DAY"]
+                },
+                "source": {
+                    "type": "string",
+                    "description": "Source of the column data.",
+                    "enum": ["Native", "Visual Measure", "Visual Column"]
+                }
+            },
+            "required": ["name", "dataType"],
+            "additionalProperties": true
+        }
+    }
+}

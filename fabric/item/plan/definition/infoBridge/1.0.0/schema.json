@@ -1,0 +1,237 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/infoBridge/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Info Bridge",
+    "description": "Connected planning info bridge configuration. Defines data sources, queries, transformation steps, writeback destinations, and query groups.",
+    "type": "object",
+    "properties": {
+        "version": {
+            "type": "string",
+            "description": "Schema version of the info bridge configuration."
+        },
+        "sources": {
+            "type": "array",
+            "description": "List of data sources, each containing queries and transformation pipelines.",
+            "items": {
+                "$ref": "#/definitions/Source"
+            }
+        },
+        "queryGroups": {
+            "type": "array",
+            "description": "Logical groupings of queries.",
+            "items": {
+                "$ref": "#/definitions/QueryGroup"
+            }
+        }
+    },
+    "required": ["version", "sources"],
+    "additionalProperties": true,
+    "definitions": {
+        "Source": {
+            "type": "object",
+            "description": "A data source in the info bridge.",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Display name of the source."
+                },
+                "type": {
+                    "type": "integer",
+                    "description": "Source type identifier."
+                },
+                "visualId": {
+                    "type": "integer",
+                    "description": "The visual ID this source is associated with."
+                },
+                "meta": {
+                    "type": "object",
+                    "description": "Source-level metadata.",
+                    "properties": {
+                        "includeMeasures": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        },
+                        "includeScenarios": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        },
+                        "queries": {
+                            "type": "array",
+                            "description": "Join query references for join sources.",
+                            "items": {
+                                "$ref": "#/definitions/JoinQueryReference"
+                            }
+                        },
+                        "joinType": {
+                            "type": "string",
+                            "description": "Join type identifier for join sources."
+                        }
+                    },
+                    "additionalProperties": true
+                },
+                "queries": {
+                    "type": "array",
+                    "description": "Queries within this source.",
+                    "items": {
+                        "$ref": "#/definitions/Query"
+                    }
+                },
+                "dependentQueries": {
+                    "type": "array",
+                    "description": "GUIDs of queries this source depends on.",
+                    "items": { "type": "string" }
+                }
+            },
+            "required": ["name", "type", "visualId", "queries"],
+            "additionalProperties": true
+        },
+        "Query": {
+            "type": "object",
+            "description": "A query within a source, including transformation steps and writeback configuration.",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Display name of the query."
+                },
+                "type": {
+                    "type": "integer",
+                    "description": "Query type identifier."
+                },
+                "visualId": {
+                    "type": "integer",
+                    "description": "The visual ID this query is associated with."
+                },
+                "meta": {
+                    "type": "object",
+                    "description": "Query-level metadata.",
+                    "additionalProperties": true
+                },
+                "queryGUID": {
+                    "type": "string",
+                    "description": "Unique identifier for the query."
+                },
+                "transformationSteps": {
+                    "type": "array",
+                    "description": "Ordered list of transformation steps applied to the query.",
+                    "items": {
+                        "$ref": "#/definitions/TransformationStep"
+                    }
+                },
+                "writebackSettings": {
+                    "type": "object",
+                    "description": "Writeback configuration for this query.",
+                    "additionalProperties": true
+                },
+                "writebackDestinations": {
+                    "type": "array",
+                    "description": "Destinations where data is written back.",
+                    "items": {
+                        "$ref": "#/definitions/WritebackDestination"
+                    }
+                }
+            },
+            "required": ["name", "type", "visualId", "queryGUID"],
+            "additionalProperties": true
+        },
+        "TransformationStep": {
+            "type": "object",
+            "description": "A single transformation step in a query pipeline.",
+            "properties": {
+                "stepIndex": {
+                    "type": "integer",
+                    "description": "One-based order of this step."
+                },
+                "meta": {
+                    "type": "object",
+                    "description": "Step metadata including type, name, value, and description.",
+                    "properties": {
+                        "type": { "type": "integer" },
+                        "name": { "type": "string" },
+                        "value": { "type": "object", "additionalProperties": true },
+                        "description": { "type": "string" }
+                    },
+                    "additionalProperties": true
+                },
+                "notes": {
+                    "description": "Optional notes attached to this step."
+                }
+            },
+            "required": ["stepIndex", "meta"],
+            "additionalProperties": true
+        },
+        "WritebackDestination": {
+            "type": "object",
+            "description": "A writeback destination configuration.",
+            "properties": {
+                "tableName": {
+                    "type": "string",
+                    "description": "Target table name."
+                },
+                "connectionId": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Connection identifier."
+                },
+                "settings": {
+                    "type": "object",
+                    "description": "Connection-specific settings.",
+                    "properties": {
+                        "host": { "type": "string" },
+                        "database": { "type": "string" },
+                        "schema": { "type": "string" },
+                        "dbDisplayName": { "type": "string" }
+                    },
+                    "additionalProperties": true
+                },
+                "type": {
+                    "type": "string",
+                    "description": "Destination type identifier (e.g., fabricsql)."
+                },
+                "settingsHash": { "type": "string" },
+                "displayTypeName": {
+                    "type": "string",
+                    "description": "Human-readable destination type name."
+                },
+                "destinationType": {
+                    "type": "integer",
+                    "description": "Numeric destination type."
+                },
+                "preference": {
+                    "type": "boolean",
+                    "description": "Whether this is the preferred destination."
+                }
+            },
+            "required": ["tableName", "type"],
+            "additionalProperties": true
+        },
+        "JoinQueryReference": {
+            "type": "object",
+            "description": "A reference to a query used in a join source.",
+            "properties": {
+                "queryGUID": { "type": "string" },
+                "sourceName": { "type": "string" },
+                "joinColumnName": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                },
+                "isBaseQuery": { "type": "boolean" }
+            },
+            "required": ["queryGUID", "sourceName", "joinColumnName"],
+            "additionalProperties": true
+        },
+        "QueryGroup": {
+            "type": "object",
+            "description": "A logical grouping of queries.",
+            "properties": {
+                "name": { "type": "string" },
+                "description": { "type": "string" },
+                "queryGUIDs": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                }
+            },
+            "required": ["name", "queryGUIDs"],
+            "additionalProperties": true
+        }
+    }
+}

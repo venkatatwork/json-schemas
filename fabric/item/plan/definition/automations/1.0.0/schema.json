@@ -1,0 +1,113 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/automations/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Automations",
+    "description": "Automation workflow definitions for a PowerTable visual. Automations define trigger-action pipelines that execute on data changes.",
+    "type": "array",
+    "items": {
+        "$ref": "#/definitions/Automation"
+    },
+    "definitions": {
+        "Automation": {
+            "type": "object",
+            "description": "An automation workflow definition.",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Display name of the automation."
+                },
+                "triggerType": {
+                    "type": "integer",
+                    "description": "Type of trigger. 1 = on row add, 2 = on row update, 3 = on scheduled."
+                },
+                "config": {
+                    "$ref": "#/definitions/AutomationConfig"
+                }
+            },
+            "required": ["name", "triggerType", "config"],
+            "additionalProperties": true
+        },
+        "AutomationConfig": {
+            "type": "object",
+            "description": "Configuration for an automation workflow.",
+            "properties": {
+                "name": { "type": "string" },
+                "trigger": {
+                    "$ref": "#/definitions/Trigger"
+                },
+                "entryGroupId": {
+                    "type": "string",
+                    "description": "ID of the first action group to execute."
+                },
+                "groups": {
+                    "type": "object",
+                    "description": "Map of group IDs to action groups.",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/ActionGroup"
+                    }
+                }
+            },
+            "required": ["name", "trigger", "entryGroupId", "groups"],
+            "additionalProperties": true
+        },
+        "Trigger": {
+            "type": "object",
+            "description": "Automation trigger definition.",
+            "properties": {
+                "id": { "type": "string" },
+                "triggerType": { "type": "string" },
+                "description": { "type": "string" },
+                "triggerConfig": {
+                    "type": "object",
+                    "description": "Trigger-specific configuration.",
+                    "additionalProperties": true
+                }
+            },
+            "required": ["id", "triggerType"],
+            "additionalProperties": true
+        },
+        "ActionGroup": {
+            "type": "object",
+            "description": "A group of sequential actions.",
+            "properties": {
+                "groupId": { "type": "string" },
+                "groupType": { "type": "string" },
+                "previousGroupId": { "type": ["string", "null"] },
+                "nextGroupId": { "type": ["string", "null"] },
+                "entryActionId": {
+                    "type": "string",
+                    "description": "ID of the first action in this group."
+                },
+                "actions": {
+                    "type": "object",
+                    "description": "Map of action IDs to action definitions.",
+                    "additionalProperties": {
+                        "$ref": "#/definitions/Action"
+                    }
+                }
+            },
+            "required": ["groupId", "entryActionId", "actions"],
+            "additionalProperties": true
+        },
+        "Action": {
+            "type": "object",
+            "description": "An individual action in the automation pipeline.",
+            "properties": {
+                "actionId": { "type": "string" },
+                "actionType": {
+                    "type": "string",
+                    "description": "Type of action. 1 = create record, 2 = update record, etc."
+                },
+                "previousActionId": { "type": ["string", "null"] },
+                "nextActionId": { "type": ["string", "null"] },
+                "config": {
+                    "type": "object",
+                    "description": "Action-specific configuration.",
+                    "additionalProperties": true
+                }
+            },
+            "required": ["actionId", "actionType"],
+            "additionalProperties": true
+        }
+    }
+}

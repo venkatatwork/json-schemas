@@ -1,0 +1,78 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/settings/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Settings",
+    "description": "Access control and row-level security settings for a PowerTable visual. Defines rules for row add, update, delete operations, and row identifier configuration.",
+    "type": "array",
+    "items": {
+        "$ref": "#/definitions/AccessSetting"
+    },
+    "definitions": {
+        "AccessSetting": {
+            "type": "object",
+            "description": "An access control setting for a specific operation type.",
+            "properties": {
+                "accessType": {
+                    "description": "Numeric access type. 1 = ROW_ADD, 3 = ROW_UPDATE."
+                },
+                "hasAccess": { "type": "boolean" },
+                "name": {
+                    "type": "string",
+                    "description": "Setting name.",
+                    "enum": ["ROW_ADD", "ROW_UPDATE", "ROW_DELETE", "ROW_IDENTIFIER"]
+                },
+                "meta": {
+                    "type": "object",
+                    "description": "Setting metadata.",
+                    "properties": {
+                        "enabled": { "type": "boolean" }
+                    },
+                    "additionalProperties": true
+                },
+                "rules": {
+                    "type": "array",
+                    "description": "Access rules for this operation.",
+                    "items": { "$ref": "#/definitions/AccessRule" }
+                },
+                "settings": {
+                    "type": "object",
+                    "description": "Additional settings (e.g., row identifier configuration).",
+                    "properties": {
+                        "rowIdentifier": { "type": "string" }
+                    },
+                    "additionalProperties": true
+                }
+            },
+            "required": ["name"],
+            "additionalProperties": true
+        },
+        "AccessRule": {
+            "type": "object",
+            "description": "An access rule with optional filter and user assignments.",
+            "properties": {
+                "ruleId": { "type": "string" },
+                "ruleName": { "type": "string" },
+                "filter": {
+                    "type": "object",
+                    "description": "Filter condition for this rule.",
+                    "additionalProperties": true
+                },
+                "filterUsers": {
+                    "type": "array",
+                    "description": "Users this rule applies to.",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "profileId": {
+                                "type": "string",
+                                "format": "uuid"
+                            },
+                            "entity": { "type": "integer" }
+                        }
+                    }
+                }
+            },
+            "additionalProperties": true
+        }
+    }
+}

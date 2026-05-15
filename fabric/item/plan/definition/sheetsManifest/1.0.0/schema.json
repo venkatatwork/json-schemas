@@ -1,0 +1,62 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/sheetsManifest/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Sheets Manifest",
+    "description": "The root manifest of a Plan definition. Lists all sheets (tabs) and their associated visual references.",
+    "type": "object",
+    "properties": {
+        "workloadItemId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The unique identifier of the Plan workload item."
+        },
+        "sheets": {
+            "type": "array",
+            "description": "Ordered list of sheets (tabs) in the Plan.",
+            "items": {
+                "$ref": "#/definitions/Sheet"
+            }
+        }
+    },
+    "required": ["workloadItemId", "sheets"],
+    "additionalProperties": false,
+    "definitions": {
+        "Sheet": {
+            "type": "object",
+            "description": "A sheet (tab) within the Plan artifact.",
+            "properties": {
+                "id": {
+                    "type": "integer",
+                    "description": "Unique numeric identifier of the sheet."
+                },
+                "order": {
+                    "type": "integer",
+                    "description": "Zero-based display order of the sheet."
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "User-visible name of the sheet."
+                },
+                "sheetType": {
+                    "type": "integer",
+                    "description": "Type of sheet. 10 = Planning, 20 = Intelligence (Report), 30 = PowerTable.",
+                    "enum": [10, 20, 30]
+                },
+                "isHidden": {
+                    "type": "integer",
+                    "description": "Visibility state. 10 = visible, 20 = hidden.",
+                    "enum": [10, 20]
+                },
+                "workloadItemEntityVisuals": {
+                    "type": "array",
+                    "description": "List of visual IDs associated with this sheet.",
+                    "items": {
+                        "type": "integer"
+                    }
+                }
+            },
+            "required": ["id", "order", "displayName", "sheetType", "isHidden", "workloadItemEntityVisuals"],
+            "additionalProperties": false
+        }
+    }
+}

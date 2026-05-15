@@ -1,0 +1,88 @@
+{
+    "$id": "https://developer.microsoft.com/json-schemas/fabric/item/plan/definition/insertRows/1.0.0/schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Insert Rows",
+    "description": "Inserted row configurations for a Planning visual. Defines static rows, calculated rows, and their hierarchy.",
+    "type": "array",
+    "items": {
+        "$ref": "#/definitions/InsertRow"
+    },
+    "definitions": {
+        "InsertRow": {
+            "type": "object",
+            "description": "An inserted row definition.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique row identifier."
+                },
+                "visualId": {
+                    "type": "integer",
+                    "description": "The visual this row belongs to."
+                },
+                "visualRowConfigId": {
+                    "type": ["string", "null"],
+                    "description": "Optional visual row config reference."
+                },
+                "rowMeta": {
+                    "$ref": "#/definitions/RowMeta"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Display name of the row."
+                },
+                "status": {
+                    "type": "integer",
+                    "description": "Row status. 10 = active."
+                },
+                "dimensionId": {
+                    "type": "string",
+                    "description": "Dimension identifier this row belongs to."
+                }
+            },
+            "required": ["id", "visualId", "rowMeta", "name", "status"],
+            "additionalProperties": true
+        },
+        "RowMeta": {
+            "type": "object",
+            "description": "Row metadata including type, hierarchy, and aggregation settings.",
+            "properties": {
+                "id": { "type": "string" },
+                "row_type": {
+                    "type": "object",
+                    "description": "Row type. Exactly one key: StaticRow, CalculatedRow, or FormulaRow.",
+                    "additionalProperties": true
+                },
+                "title": { "type": "string" },
+                "scaling_factor": {
+                    "type": "string",
+                    "description": "Scaling factor for display.",
+                    "enum": ["Auto", "None", "K", "M", "B", "T"]
+                },
+                "include_in_total": { "type": "boolean" },
+                "parent_id": {
+                    "type": ["string", "null"],
+                    "description": "Parent row ID for hierarchy."
+                },
+                "level": {
+                    "type": "integer",
+                    "description": "Hierarchy level depth."
+                },
+                "previous_row_id": {
+                    "type": ["string", "null"],
+                    "description": "Sibling ordering reference."
+                },
+                "disabled": { "type": "boolean" },
+                "bind_for_cross_filter": { "type": ["boolean", "null"] },
+                "description": { "type": ["string", "null"] },
+                "column_aggregation": {
+                    "type": "string",
+                    "description": "Aggregation method for the row.",
+                    "enum": ["Sum", "Average", "Min", "Max", "Count"]
+                }
+            },
+            "required": ["id", "row_type", "title"],
+            "additionalProperties": true
+        }
+    }
+}
